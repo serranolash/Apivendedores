@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Página de inicio{% endblock %}
+{% block body %}
+<h2>CONSULTAS DE PRECIOS</h2>
+<a href="base.html"><button>Volver a Inicio</button></a>
+<form method="post">
+  <label for="codigo">Ingrese el código:</label>
+  <input type="text" id="codigo" name="codigo">
+  
+  <button id="scan-btn" type="button">Escanear</button>
+
+  <label for="base_de_datos">Seleccione la base de datos:</label>
+  <select id="base_de_datos" name="base_de_datos">
+    <option value="DEPOSEVN">DEPOSEVN</option>
+    <option value="DEPOFORT">DEPOFORT</option>
+    <!-- Agrega más opciones si es necesario -->
+  </select>
+
+  <input type="submit" value="Enviar">
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quagga/dist/quagga.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var btn = $("#scan-btn");
+        var txt = $("#codigo");
+        
+        Quagga.init({
+            inputStream : {
+              name : "Live",
+              type : "LiveStream",
+              target: document.querySelector('#camera-preview')    // se define el contenedor para la vista previa de la cámara
+            },
+            decoder : {
+              readers : ["ean_reader"]                              // se define el tipo de código de barras a leer
+            }
+          }, function(err) {
+            if (err) {
+                console.log(err);
+                alert("Error al acceder a la cámara");
+                return
+            }
+            console.log("Inicialización Quagga completa!");
+            Quagga.start();
+        });
+        
+        // Agregar funcionalidad al botón de escanear
+        btn.on("click", function () {
+            Quagga.onDetected(function(result) {
+                txt.val(result.codeResult.code);
+                Quagga.stop();
+            });
+        });
+    });
+</script>
+<div id="camera-preview"></div>
+{% endblock %}

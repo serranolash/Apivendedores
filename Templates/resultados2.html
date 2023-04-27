@@ -1,0 +1,121 @@
+<a href="/" class="btn btn-primary">Volver al ínicio</a>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #000;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #000;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-right: 1px solid #000;
+        }
+
+        td {
+            border-right: 1px solid #000;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        @media screen and (max-width: 600px) {
+            table {
+                border: 0;
+            }
+
+            th {
+                display: none;
+            }
+
+            td {
+                display: block;
+                border: none;
+                border-bottom: 1px solid #ddd;
+                text-align: right;
+            }
+
+            td:before {
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Descripción del artículo:</h1>
+    <p>{{ articulo_descripcion }}</p>
+    <p>{{ articulo_color }}</p>
+    <p>{{ articulo_colordescripcion }}</p>
+    <h1>Stock:</h1>
+    {% if stock %}
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Base de datos</th>
+                <th>Talle</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in stock %}
+            <tr>
+                <td>{{ item['BaseDeDatos'] }}</td>
+                <td>{{ item['Talle'] }}</td>
+                <td>
+                    <ul>
+                        {% for stock_item in item['Stock'] %}
+                <td {% if stock_item['Stock']> 0 %}class="stock-positive"{% endif %}><li>
+                        {{ stock_item }}</li>
+                </td>
+                {% endfor %}
+                </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% else %}
+    <p>No se encontraron resultados</p>
+    {% endif %}
+    <script>
+        function resaltarStock() {
+            var stockItems = document.querySelectorAll('.stock-zero, .stock-positive');
+            stockItems.forEach(function (item) {
+                if (item.innerText <= "0.0") {
+                    item.style.color = "red";
+                } else {
+                    item.style.color = "blue";
+                }
+            });
+        }
+        window.addEventListener("load", function () {
+            resaltarStock();
+        });
+    </script>
+
+</body>
+
+</html>

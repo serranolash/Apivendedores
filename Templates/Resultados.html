@@ -1,0 +1,28 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="estilos.css">
+</head>
+<a href="/" class="btn btn-primary">Volver al índice</a>
+
+<table class="table" style="border: 1px solid blue;">
+  <thead style="border: 1px solid blue;">
+    <tr style="border: 1px solid blue;">
+      <th style="border: 1px solid blue;"><h1>Articulo</th></h1>
+      <th style="border: 1px solid blue;"><h1>Descripción</th></h1>
+      <th style="border: 1px solid blue;"><h1>Precio</th></h1>
+      <th style="border: 1px solid blue;"><h1>Stock</th></h1>
+      <th style="border: 1px solid blue;"><h1>Lista</th></h1>
+    </tr>
+  </thead>
+  <tbody style="border: 1px solid blue;">
+    {% for resultado in resultados["Resultados"] %}
+    <tr style="border: 1px solid blue;">
+      <td style="border: 1px solid blue;">{{ resultado.Articulo }}</td>
+      <td style="border: 1px solid blue;">{{ resultado.ArticuloDescripcion }}</td>
+      <td style="border: 1px solid blue;">{{ resultado.Precio }}</td>
+      <td style="border: 1px solid blue;">{{ resultado.Stock }}</td>
+      <td style="border: 1px solid blue;">{{ resultado.Lista }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="base.html"><button>Volver a Inicio</button></a>

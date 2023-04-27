@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Página de inicio{% endblock %}
+{% block body %}
+
+<h2>CONSULTAS DE STOCK ENTRE LOCALES</h2>
+<a href="base.html"><button>Volver a Inicio</button></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quagga/dist/quagga.min.js"></script>
+<form method="post">
+    <label for="codigo">Método inteligente, no importa que sea una consulta de Seven o Fortaleza, ingresa aquí el código:</label>
+    <input type="text" id="codigo" name="codigo">
+    <button id="scan-btn" type="button">Escanear</button>
+    <input type="submit" value="Enviar">
+</form>
+<p><h4 style="color:red;">Importante!</h4>
+    La siguiente consulta tiene demora ya que busca la información en varias bases.<br>  
+    En el caso de que arroje un error, vuelva a ingresar el código.</p>
+<div id="camera-preview"></div>
+<script type="text/javascript">
+    $(function () {
+        var btn = $("#scan-btn");
+        var txt = $("#codigo");
+        var cameraPreview = $("#camera-preview");
+        
+        Quagga.init({
+            inputStream : {
+              name : "Live",
+              type : "LiveStream",
+              target: cameraPreview[0]    // se define el contenedor para la vista previa de la cámara
+            },
+            decoder : {
+              readers : ["ean_reader"]                              // se define el tipo de código de barras a leer
+            }
+        });
+        
+        // Agregar funcionalidad al botón de escanear
+        btn.on("click", function () {
+            Quagga.start();
+            Quagga.onDetected(function(result) {
+                txt.val(result.codeResult.code);
+                Quagga.stop();
+            });
+        });
+    });
+</script>
+{% endblock %}
